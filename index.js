@@ -1,55 +1,56 @@
 const express = require("express");
 const cors = require("cors");
-const mongoose = require('mongoose');
-const mongoURI = process.env.MONGODB_URI;
+const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const app = express();
-require('dotenv').config();
+const { MongoClient, ServerApiVersion } = require("mongodb");
 const Routes = require("./routes/route.js");
-const { MongoClient, ServerApiVersion } = require('mongodb');
 
 dotenv.config();
 
 const PORT = process.env.PORT || 4000;
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://harishjadhav675:LTlBclmEqe0AQqY0@cluster0.lk8wa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
-// Middleware
-app.use(express.json({ limit: '10mb' }));
+const app = express();
+
+app.use(express.json({ limit: "10mb" }));
 app.use(cors());
 
-// Use the corrected MongoDB connection URI
-const uri = "mongodb+srv://harishjadhav675:LTlBclmEqe0AQqY0@cluster0.lk8wa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
+mongoose.connect(MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log("✅ MongoDB connected successfully via Mongoose"))
+  .catch((err) => {
+    console.error("❌ MongoDB connection error via Mongoose:", err.message);
+    process.exit(1);
+  });
 
-const client = new MongoClient(uri, {
+const client = new MongoClient(MONGODB_URI, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
-  }
+  },
 });
-async function run() {
+
+async function runMongoClient() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    // Send a ping to confirm a successful connection
     await client.db("school").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    console.log("✅ Pinged your deployment. Successfully connected to MongoDB via MongoClient!");
+  } catch (err) {
+    console.error("❌ MongoDB connection error via MongoClient:", err.message);
   } finally {
-    // Ensures that the client will close when you finish/error
     await client.close();
   }
 }
-run().catch(console.dir);
-// Routes
-app.use('/', Routes);
 
-// Start server with error handling
+runMongoClient().catch(console.dir);
+
+app.use("/", Routes);
+
 app.listen(PORT, () => {
-  console.log(`Server started at port no. ${PORT}`);
-}).on('error', (err) => {
-  console.error("Server error:", err);
+  console.log(`🚀 Server started successfully at port ${PORT}`);
+}).on("error", (err) => {
+  console.error("❌ Server error:", err.message);
 });
-
-
