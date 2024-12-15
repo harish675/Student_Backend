@@ -10,7 +10,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 
 dotenv.config();
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 4000;
 
 // Middleware
 app.use(express.json({ limit: '10mb' }));
@@ -53,4 +53,3 @@ app.listen(PORT, () => {
 });
 
 
-// mongodb+srv://harishjadhav675:LTlBclmEqe0AQqY0@cluster0.lk8wa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
