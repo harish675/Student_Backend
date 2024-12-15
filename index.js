@@ -17,7 +17,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(cors());
 
 // Use the corrected MongoDB connection URI
-const uri = "mongodb+srv://crsongirkar2:hotRVKkqHlVGqaSg@cluster0.r5jbe.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = "mongodb+srv://harishjadhav675:LTlBclmEqe0AQqY0@cluster0.lk8wa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
@@ -51,3 +51,6 @@ app.listen(PORT, () => {
 }).on('error', (err) => {
   console.error("Server error:", err);
 });
+
+
+// mongodb+srv://harishjadhav675:LTlBclmEqe0AQqY0@cluster0.lk8wa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
